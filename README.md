@@ -1,4 +1,6 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+项目基于 [Create React App](https://github.com/facebook/create-react-app).
+
+一个去中心化路由的demo
 
 ## Available Scripts
 
