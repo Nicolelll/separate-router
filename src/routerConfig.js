@@ -2,8 +2,8 @@
  * @Author: zhangLing
  * @Date: 2020-03-17 18:00:42
  * @LastEditors: zhangLing
- * @LastEditTime: 2020-03-23 15:59:50
- * @Description: 文件描述
+ * @LastEditTime: 2020-03-24 15:42:26
+ * @Description: 路由文件
  */
 import React from 'react';
 import BasicLayout from './layout/basicLayout'
@@ -13,38 +13,57 @@ import { HashRouter, Route, Switch   } from 'react-router-dom'
 
 const rootRoutes =  [
   {
-  component: BasicLayout,
-  child: (r => {
-    return r.keys().map(key => r(key))
-    })(require.context('./routes', true, /\/router\.js$/))
+    path: '/',
+    component: BasicLayout,
+    routes: (r => {
+      return r.keys().map(key => r(key).default)
+      })(require.context('./routes', true, /\/router\.js$/)).flat()
   },
   {
+    path: '/test',
     component: TestLayout,
-    child: (r => {
-      return r.keys().map(key => r(key))
+    routes: (r => {
+      return r.keys().map(key => r(key).default)
     })(require.context('./routes', true, /test\.router\.js$/))
   },
 ]
+const renderRoutes = () => {
+  const routesList = []
+  rootRoutes.map((route) => (
+    route.routes.map(r => (
+      routesList.push({
+        layout: route.component,
+        path: r.path,
+        component: r.component,
+      })
+    ))
+  ))
+  return routesList
+}
 const RootRouters = () => {
   return (
     <HashRouter>
        <Switch>
-         <Route render={routerProps => (
-           rootRoutes.map(item => {
-             console.log(routerProps)
-             return <item.component key={item.component} router={routerProps}>
-               {
-                 item.child.map(r => (
-                  <Route exact {...r.default} key={r.path} />
-                 ))
-               }
-             </item.component>
-           })
-         )} >
-         </Route>
+         {
+           renderRoutes().map(route => (
+             <RouteWithLayout {...route} />
+           ))
+         }
          <Route component={NoFound} path='*' />
         </Switch>
     </HashRouter>
+  )
+}
+const RouteWithLayout = route => {
+  return (
+    <Route
+      path={route.path}
+      render={props => (
+        <route.layout {...props}>
+          <route.component />
+        </route.layout>
+      )}
+    />
   )
 }
 
