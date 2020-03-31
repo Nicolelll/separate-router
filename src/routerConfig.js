@@ -2,7 +2,7 @@
  * @Author: zhangLing
  * @Date: 2020-03-17 18:00:42
  * @LastEditors: zhangLing
- * @LastEditTime: 2020-03-24 15:42:26
+ * @LastEditTime: 2020-03-31 17:38:51
  * @Description: 路由文件
  */
 import React from 'react';
@@ -44,12 +44,12 @@ const RootRouters = () => {
   return (
     <HashRouter>
        <Switch>
-         {
-           renderRoutes().map(route => (
-             <RouteWithLayout {...route} />
-           ))
-         }
-         <Route component={NoFound} path='*' />
+          {
+            renderRoutes().map(route => (
+              <RouteWithLayout {...route} key={route.path} exact />
+            ))
+          }
+          <Route component={NoFound} path='*' /> 
         </Switch>
     </HashRouter>
   )
