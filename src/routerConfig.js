@@ -2,14 +2,14 @@
  * @Author: zhangLing
  * @Date: 2020-03-17 18:00:42
  * @LastEditors: zhangLing
- * @LastEditTime: 2020-03-31 17:38:51
+ * @LastEditTime: 2020-05-06 16:30:30
  * @Description: 路由文件
  */
 import React from 'react';
 import BasicLayout from './layout/basicLayout'
 import TestLayout from './layout/testLayout'
 import NoFound from './404'
-import { HashRouter, Route, Switch   } from 'react-router-dom'
+import { HashRouter, Route, Switch } from 'react-router-dom'
 
 const rootRoutes =  [
   {
@@ -17,14 +17,14 @@ const rootRoutes =  [
     component: BasicLayout,
     routes: (r => {
       return r.keys().map(key => r(key).default)
-      })(require.context('./routes', true, /\/router\.js$/)).flat()
+      })(require.context('./pages', true, /\/router\.js$/)).flat()
   },
   {
     path: '/test',
     component: TestLayout,
     routes: (r => {
       return r.keys().map(key => r(key).default)
-    })(require.context('./routes', true, /test\.router\.js$/))
+    })(require.context('./pages', true, /test\.router\.js$/))
   },
 ]
 const renderRoutes = () => {
